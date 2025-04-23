@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 18:16:04 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/21 17:06:16 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/04/23 03:03:51 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,22 @@ bool ScalarConverter::CheckString(){
 }
 void ScalarConverter::SetData(){
 
-    double number = std::atof(getStr().c_str());
+    double number = std::strtod(getStr().c_str(), NULL);
     char ch = static_cast<char>(number);
     int in = static_cast<int>(number);
     float fl = static_cast<float>(number);
     double db = static_cast<double>(number);
 
-    std::stringstream ss;
-    ss << ch;
+    std::stringstream ssch;
+    std::stringstream ssin;
+    std::stringstream ssfl;
+    std::stringstream ssdb;
+    ssch << ch;
+    ssin << in;
+    ssfl << fl;
+    ssdb << db;
     if (!std::isprint(ch))
-        DisplayData("Non displayabl", std::to_string(in), std::to_string(fl), std::to_string(db));
+        DisplayData("Non displayabl", ssin.str(), ssfl.str(), ssdb.str());
     else
-        DisplayData(ss.str(), std::to_string(in), std::to_string(fl), std::to_string(db));
+        DisplayData(ssch.str(), ssin.str(), ssfl.str(), ssdb.str());
 }

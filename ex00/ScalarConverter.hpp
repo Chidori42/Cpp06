@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 18:10:11 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/21 16:52:32 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/04/23 02:59:56 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,12 @@
 
 #include <cstdlib>
 #include <string>
+#include <cctype>
+#include <iomanip>
+#include <limits>
+#include <cerrno>
 #include <sstream>
 #include <iostream>
-#include <algorithm>
 
 class ScalarConverter{
     private:
