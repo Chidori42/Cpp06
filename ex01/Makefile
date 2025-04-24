@@ -1,9 +1,10 @@
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 SRCS =  main.cpp\
-        ScalarConverter.cpp
+        Serializer.cpp\
+		Data.cpp
 
 
-NAME = convert
+NAME = Serialization
 
 OBJECTS = $(SRCS:.cpp=.o)
 
@@ -11,7 +12,7 @@ RM = rm -f
 
 all: $(NAME)
 
-%.o: %.cpp  ScalarConverter.hpp
+%.o: %.cpp  Serializer.hpp Data.hpp
 	c++ $(CFLAGS) -c -o $@ $<
 
 $(NAME): $(OBJECTS)
