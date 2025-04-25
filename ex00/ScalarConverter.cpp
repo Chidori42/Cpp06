@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 18:16:04 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/25 11:04:47 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/04/25 11:56:17 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void ScalarConverter::SetData(){
     char ch;
 
     double number = std::strtod(getStr().c_str(), NULL);
-
     ch = static_cast<char>(number);
     if (std::isprint(ch)) {
         ssch << ch;
@@ -105,11 +104,11 @@ void ScalarConverter::SetData(){
         ssin << "Not valid";
     else
         ssin << intToString(static_cast<int>(number));
-    if (errno || number > FLT_MAX || number < FLT_MIN)
+    if (errno || number > FLT_MAX || number < -FLT_MAX)
         ssfl << "Not valid";
     else
         ssfl << intToString(static_cast<float>(number));
-    if(errno || number > DBL_MAX || number < DBL_MIN)
+    if(errno || number > DBL_MAX || number < -DBL_MAX)
         ssdb << "Not valid";
     else
         ssdb << intToString(static_cast<double>(number));
