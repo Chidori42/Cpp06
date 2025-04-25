@@ -1,9 +1,12 @@
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 SRCS =  main.cpp\
-        ScalarConverter.cpp
+        A.cpp\
+		B.cpp\
+		C.cpp\
+		Base.cpp
 
 
-NAME = convert
+NAME = real_type
 
 OBJECTS = $(SRCS:.cpp=.o)
 
@@ -11,7 +14,7 @@ RM = rm -f
 
 all: $(NAME)
 
-%.o: %.cpp  ScalarConverter.hpp
+%.o: %.cpp  A.hpp B.hpp C.hpp Base.hpp
 	c++ $(CFLAGS) -c -o $@ $<
 
 $(NAME): $(OBJECTS)

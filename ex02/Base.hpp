@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 00:00:29 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/24 00:06:41 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/04/24 23:20:09 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,5 @@ class Base{
         void identify(Base& p);
 };
 
-class A :public Base{
-
-};
-class B :public Base{
-    
-};
-class C :public Base{
-    
-};
 
 #endif

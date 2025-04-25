@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 18:16:04 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/23 03:03:51 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/04/25 11:04:47 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,21 @@ ScalarConverter &ScalarConverter::operator=(ScalarConverter const &other){
         setStr(other.str);
     }
     return (*this);
+}
+std::string ScalarConverter::intToString(double value) {
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(1) << value;
+    return ss.str();
+}
+std::string ScalarConverter::intToString(float value) {
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(1) << value;
+    return ss.str();
+}
+std::string ScalarConverter::intToString(int value) {
+    std::stringstream ss;
+    ss << value;
+    return ss.str();
 }
 std::string ScalarConverter::getStr(){
     return (this->str);
@@ -71,23 +86,33 @@ bool ScalarConverter::CheckString(){
     return (true);
 }
 void ScalarConverter::SetData(){
-
-    double number = std::strtod(getStr().c_str(), NULL);
-    char ch = static_cast<char>(number);
-    int in = static_cast<int>(number);
-    float fl = static_cast<float>(number);
-    double db = static_cast<double>(number);
-
+    errno = 0;
     std::stringstream ssch;
     std::stringstream ssin;
     std::stringstream ssfl;
     std::stringstream ssdb;
-    ssch << ch;
-    ssin << in;
-    ssfl << fl;
-    ssdb << db;
-    if (!std::isprint(ch))
-        DisplayData("Non displayabl", ssin.str(), ssfl.str(), ssdb.str());
+    char ch;
+
+    double number = std::strtod(getStr().c_str(), NULL);
+
+    ch = static_cast<char>(number);
+    if (std::isprint(ch)) {
+        ssch << ch;
+    } else {
+        ssch << "Non displayable";
+    }
+    if (errno || number > INT_MAX || number < INT_MIN)
+        ssin << "Not valid";
     else
-        DisplayData(ssch.str(), ssin.str(), ssfl.str(), ssdb.str());
+        ssin << intToString(static_cast<int>(number));
+    if (errno || number > FLT_MAX || number < FLT_MIN)
+        ssfl << "Not valid";
+    else
+        ssfl << intToString(static_cast<float>(number));
+    if(errno || number > DBL_MAX || number < DBL_MIN)
+        ssdb << "Not valid";
+    else
+        ssdb << intToString(static_cast<double>(number));
+
+    DisplayData(ssch.str(), ssin.str(), ssfl.str(), ssdb.str());
 }

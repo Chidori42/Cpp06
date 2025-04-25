@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   B.cpp                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/19 19:46:06 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/24 23:28:14 by ael-fagr         ###   ########.fr       */
+/*   Created: 2025/04/24 08:19:59 by ael-fagr          #+#    #+#             */
+/*   Updated: 2025/04/24 08:21:04 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Base.hpp"
+#include "B.hpp"
 
-int main()
-{
-    Base b;
-    Base *new_b = b.generate();
+B::B(){
 
-    b.identify(new_b);
-    delete new_b;
-    return (0);
+}
+B::~B(){
+    std::cout << "B Destructor" << std::endl;
 }
