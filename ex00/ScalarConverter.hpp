@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 18:10:11 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/26 08:52:02 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/04/26 11:19:36 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@
 class ScalarConverter{
     private:
         std::string str;
+        std::string character;
+        std::string integer;
+        std::string floating;
+        std::string doubl;
     public:
         ScalarConverter();
         ~ScalarConverter();
@@ -36,6 +40,14 @@ class ScalarConverter{
         ScalarConverter &operator=(ScalarConverter const &other);
         std::string getStr();
         void setStr(std::string str);
+        std::string getCharacter();
+        void setCharacter(std::string ch);
+        std::string getInteger();
+        void setInteger(std::string in);
+        std::string getFloating();
+        void setFloating(std::string fl);
+        std::string getDoubl();
+        void setDoubl(std::string db);
 
         std::string intToString(double value);
         std::string intToString(float value);
@@ -45,8 +57,7 @@ class ScalarConverter{
         bool CheckString();
         bool CountCharacter(char ch);
         bool HandlePseudoLiterals();
-        void ImposibleConvert();
-        void DisplayData(std::string ch, std::string in, std::string fl, std::string db);
+        void DisplayData();
 };
 
 #endif

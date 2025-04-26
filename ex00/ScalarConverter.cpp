@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 18:16:04 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/26 09:36:07 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/04/26 12:47:16 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,44 @@ void ScalarConverter::setStr(std::string str){
     this->str = str;
 }
 
-void ScalarConverter::DisplayData(std::string ch, std::string in, std::string fl, std::string db){
-    std::cout << "char: " << ch << std::endl;
-    std::cout << "int: " << in << std::endl;
-    std::cout << "float: " << fl << "f" << std::endl;
-    std::cout << "double: " << db << std::endl;
+std::string ScalarConverter::getCharacter(){
+    return (this->character);
+}
+void ScalarConverter::setCharacter(std::string ch){
+    this->character = ch;
+}
+std::string ScalarConverter::getInteger(){
+    return (this->integer);
+}
+void ScalarConverter::setInteger(std::string in){
+    this->integer = in;
+}
+std::string ScalarConverter::getFloating(){
+    return (this->floating);
+}
+void ScalarConverter::setFloating(std::string fl){
+    this->floating = fl;
+}
+std::string ScalarConverter::getDoubl(){
+    return (this->doubl);
+}
+void ScalarConverter::setDoubl(std::string db){
+    this->doubl = db;
 }
 
-void ScalarConverter::ImposibleConvert(){
-    std::cout << "char: impossible" << std::endl;
-    std::cout << "int: impossible" << std::endl;
-    std::cout << "float: impossible" << std::endl;
-    std::cout << "double: impossible" << std::endl;
+void ScalarConverter::DisplayData(){
+    if (getCharacter() != "impossible" && getCharacter() != "Non displayable")
+        std::cout << "char: '" << getCharacter() << "'" << std::endl;
+    else
+        std::cout << "char: " << getCharacter() << std::endl;
+    std::cout << "int: " << getInteger() << std::endl;
+    if (getFloating() != "impossible" && getFloating() != "Not valid")
+        std::cout << "float: " << getFloating() << "f" << std::endl;
+    else
+    std::cout << "float: " << getFloating() << std::endl;
+    std::cout << "double: " << getDoubl() << std::endl;
 }
+
 bool ScalarConverter::CountCharacter(char ch){
     int counter = 0;
     for (size_t i = 0; i < getStr().length(); i++){
@@ -96,7 +121,11 @@ bool ScalarConverter::HandlePseudoLiterals(){
             fl = fl.substr(0, 3);
             db = db.substr(0, 3);
         }
-        DisplayData("impossible", "impossible", fl, db);
+
+        setCharacter("impossible");
+        setInteger("impossible");
+        setFloating(fl);
+        setDoubl(db);
         return (true);
     }
     return (false);
@@ -104,7 +133,7 @@ bool ScalarConverter::HandlePseudoLiterals(){
 bool ScalarConverter::CheckString(){
     for (size_t i = 0; i < getStr().length(); i++){
         if (!isdigit(getStr()[i]) && getStr()[i] != '.' && getStr()[i] != 'f'
-            && getStr()[i] != '-' && getStr()[i] != '+')
+        && getStr()[i] != '-' && getStr()[i] != '+')
             return (false);
         else if (getStr()[i] == 'f' && getStr()[i + 1] != '\0')
             return (false);
@@ -140,6 +169,9 @@ void ScalarConverter::SetData(){
         ssdb << "Not valid";
     else
         ssdb << intToString(static_cast<double>(number));
-
-    DisplayData(ssch.str(), ssin.str(), ssfl.str(), ssdb.str());
+    
+    setCharacter(ssch.str());
+    setInteger(ssin.str());
+    setFloating(ssfl.str());
+    setDoubl(ssdb.str());
 }
