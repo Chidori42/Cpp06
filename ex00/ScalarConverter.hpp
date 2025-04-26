@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 18:10:11 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/25 10:32:43 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/04/26 08:52:02 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <iomanip>
 #include <climits>
 #include <float.h>
+#include <cmath>
 // #include <limits.h>
 #include <cerrno>
 #include <sstream>
@@ -39,9 +40,11 @@ class ScalarConverter{
         std::string intToString(double value);
         std::string intToString(float value);
         std::string intToString(int value);
+    
         void SetData();
         bool CheckString();
         bool CountCharacter(char ch);
+        bool HandlePseudoLiterals();
         void ImposibleConvert();
         void DisplayData(std::string ch, std::string in, std::string fl, std::string db);
 };

@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 18:16:04 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/25 11:56:17 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/04/26 09:36:07 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ void ScalarConverter::DisplayData(std::string ch, std::string in, std::string fl
 void ScalarConverter::ImposibleConvert(){
     std::cout << "char: impossible" << std::endl;
     std::cout << "int: impossible" << std::endl;
-    std::cout << "float: nonf" << std::endl;
-    std::cout << "double: non" << std::endl;
+    std::cout << "float: impossible" << std::endl;
+    std::cout << "double: impossible" << std::endl;
 }
 bool ScalarConverter::CountCharacter(char ch){
     int counter = 0;
@@ -72,6 +72,34 @@ bool ScalarConverter::CountCharacter(char ch){
     if (counter > 1)
         return (false);
     return (true);
+}
+bool ScalarConverter::HandlePseudoLiterals(){
+    std::string tab[6] = {"nan", "+inf", "-inf", "nanf", "+inff", "-inff"};
+    bool check = false;
+
+    for (size_t i = 0; i < 6; i++){
+        if (getStr() == tab[i]){
+            check = true;
+            break;
+        }
+    }
+    if (check)
+    {
+        std::string fl = getStr();
+        std::string db = getStr();
+        if ((getStr()[0] == '+' || getStr()[0] == '-') && getStr()[4] == 'f')
+        {
+            fl = fl.substr(0, 4);
+            db = db.substr(0, 4);
+        }
+        else if (getStr()[3] == 'f'){
+            fl = fl.substr(0, 3);
+            db = db.substr(0, 3);
+        }
+        DisplayData("impossible", "impossible", fl, db);
+        return (true);
+    }
+    return (false);
 }
 bool ScalarConverter::CheckString(){
     for (size_t i = 0; i < getStr().length(); i++){
