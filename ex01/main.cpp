@@ -15,15 +15,14 @@
 int main()
 {
     Data dt;
-    Serializer *se;
     uintptr_t ptr;
 
     dt.setString("Abdellatif");
     dt.setNumber(23);
     dt.setLnum(65656566565566666);
 
-    ptr = se->serialize(&dt);
-    Data *data_ptr = se->deserialize(ptr);
+    ptr = Serializer::serialize(&dt);
+    Data *data_ptr = Serializer::deserialize(ptr);
 
     std::cout << dt.getString() << std::endl;
     std::cout << data_ptr->getString() << std::endl;

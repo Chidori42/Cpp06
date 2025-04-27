@@ -27,37 +27,10 @@
 
 class ScalarConverter{
     private:
-        std::string str;
-        std::string character;
-        std::string integer;
-        std::string floating;
-        std::string doubl;
-    public:
         ScalarConverter();
+    public:
         ~ScalarConverter();
-        ScalarConverter(ScalarConverter const &other);
-
-        ScalarConverter &operator=(ScalarConverter const &other);
-        std::string getStr();
-        void setStr(std::string str);
-        std::string getCharacter();
-        void setCharacter(std::string ch);
-        std::string getInteger();
-        void setInteger(std::string in);
-        std::string getFloating();
-        void setFloating(std::string fl);
-        std::string getDoubl();
-        void setDoubl(std::string db);
-
-        std::string intToString(double value);
-        std::string intToString(float value);
-        std::string intToString(int value);
-    
-        void SetData();
-        bool CheckString();
-        bool CountCharacter(char ch);
-        bool HandlePseudoLiterals();
-        void DisplayData();
+        static void convert(std::string str);
 };
 
 #endif

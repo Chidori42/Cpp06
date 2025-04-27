@@ -29,38 +29,8 @@ std::string trim(const std::string& str){
 int main(int ac, char **av)
 {
     if (ac == 2){
-        ScalarConverter convert;
         std::string str = trim(av[1]);
-        convert.setStr(str);
-        if (convert.HandlePseudoLiterals()){
-            convert.DisplayData();
-            return (1);
-        }
-        else if (convert.getStr().length() == 1
-            && isprint(convert.getStr()[0]) &&
-            !isdigit(convert.getStr()[0])){
-            convert.setCharacter(convert.getStr());
-            convert.setInteger("impossible");
-            convert.setFloating("impossible");
-            convert.setDoubl("impossible");
-            convert.DisplayData();
-        }
-        else if (convert.CheckString()
-            && convert.CountCharacter('f')
-            && convert.CountCharacter('.')
-            && convert.CountCharacter('-')
-            && convert.CountCharacter('+'))
-        {
-            convert.SetData();
-            convert.DisplayData();
-        }
-        else{
-            convert.setCharacter("impossible");
-            convert.setInteger("impossible");
-            convert.setFloating("impossible");
-            convert.setDoubl("impossible");
-            convert.DisplayData();
-        }
+        ScalarConverter::convert(str);
     }
     else{
         std::cout << "Invalid Number Of Parameters" << std::endl;

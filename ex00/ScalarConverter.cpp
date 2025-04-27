@@ -18,131 +18,112 @@ ScalarConverter::ScalarConverter(){
 ScalarConverter::~ScalarConverter(){
     
 }
-ScalarConverter::ScalarConverter(ScalarConverter const &other){
-    setStr(other.str);
-}
-ScalarConverter &ScalarConverter::operator=(ScalarConverter const &other){
-    if (this != &other)
-    {
-        setStr(other.str);
-    }
-    return (*this);
-}
-std::string ScalarConverter::intToString(double value) {
+
+std::string intToString(double value) {
     std::stringstream ss;
     ss << std::fixed << std::setprecision(1) << value;
     return ss.str();
 }
-std::string ScalarConverter::intToString(float value) {
+std::string intToString(float value) {
     std::stringstream ss;
     ss << std::fixed << std::setprecision(1) << value;
     return ss.str();
 }
-std::string ScalarConverter::intToString(int value) {
+std::string intToString(int value) {
     std::stringstream ss;
     ss << value;
     return ss.str();
 }
-std::string ScalarConverter::getStr(){
-    return (this->str);
-}
-void ScalarConverter::setStr(std::string str){
-    this->str = str;
-}
 
-std::string ScalarConverter::getCharacter(){
-    return (this->character);
-}
-void ScalarConverter::setCharacter(std::string ch){
-    this->character = ch;
-}
-std::string ScalarConverter::getInteger(){
-    return (this->integer);
-}
-void ScalarConverter::setInteger(std::string in){
-    this->integer = in;
-}
-std::string ScalarConverter::getFloating(){
-    return (this->floating);
-}
-void ScalarConverter::setFloating(std::string fl){
-    this->floating = fl;
-}
-std::string ScalarConverter::getDoubl(){
-    return (this->doubl);
-}
-void ScalarConverter::setDoubl(std::string db){
-    this->doubl = db;
-}
-
-void ScalarConverter::DisplayData(){
-    if (getCharacter() != "impossible" && getCharacter() != "Non displayable")
-        std::cout << "char: '" << getCharacter() << "'" << std::endl;
+void DisplayData(std::string ch, std::string in, std::string fl, std::string db){
+    if (ch != "impossible" && ch != "Non displayable" && ch != "Not valid")
+        std::cout << "char: '" << ch << "'" << std::endl;
     else
-        std::cout << "char: " << getCharacter() << std::endl;
-    std::cout << "int: " << getInteger() << std::endl;
-    if (getFloating() != "impossible" && getFloating() != "Not valid")
-        std::cout << "float: " << getFloating() << "f" << std::endl;
+        std::cout << "char: " << ch << std::endl;
+    std::cout << "int: " << in << std::endl;
+    if (fl != "impossible" && fl != "Not valid")
+        std::cout << "float: " << fl << "f" << std::endl;
     else
-    std::cout << "float: " << getFloating() << std::endl;
-    std::cout << "double: " << getDoubl() << std::endl;
+    std::cout << "float: " << fl << std::endl;
+    std::cout << "double: " << db << std::endl;
 }
 
-bool ScalarConverter::CountCharacter(char ch){
+bool CountCharacter(std::string str, char ch){
     int counter = 0;
-    for (size_t i = 0; i < getStr().length(); i++){
-        if (getStr()[i] == ch)
+    for (size_t i = 0; i < str.length(); i++){
+        if (str[i] == ch)
             counter++;
     }
     if (counter > 1)
         return (false);
     return (true);
 }
-bool ScalarConverter::HandlePseudoLiterals(){
+bool HandlePseudoLiterals(std::string str){
     std::string tab[6] = {"nan", "+inf", "-inf", "nanf", "+inff", "-inff"};
     bool check = false;
 
     for (size_t i = 0; i < 6; i++){
-        if (getStr() == tab[i]){
+        if (str == tab[i]){
             check = true;
             break;
         }
     }
     if (check)
     {
-        std::string fl = getStr();
-        std::string db = getStr();
-        if ((getStr()[0] == '+' || getStr()[0] == '-') && getStr()[4] == 'f')
+        std::string fl = str;
+        std::string db = str;
+        if ((str[0] == '+' || str[0] == '-') && str[4] == 'f')
         {
             fl = fl.substr(0, 4);
             db = db.substr(0, 4);
         }
-        else if (getStr()[3] == 'f'){
+        else if (str[3] == 'f'){
             fl = fl.substr(0, 3);
             db = db.substr(0, 3);
         }
-
-        setCharacter("impossible");
-        setInteger("impossible");
-        setFloating(fl);
-        setDoubl(db);
+        DisplayData("impossible", "impossible", fl, db);
         return (true);
     }
     return (false);
 }
-bool ScalarConverter::CheckString(){
-    for (size_t i = 0; i < getStr().length(); i++){
-        if (!isdigit(getStr()[i]) && getStr()[i] != '.' && getStr()[i] != 'f'
-        && getStr()[i] != '-' && getStr()[i] != '+')
+bool CheckString(std::string str){
+    for (size_t i = 0; i < str.length(); i++){
+        if (!isdigit(str[i]) && str[i] != '.' && str[i] != 'f'
+        && str[i] != '-' && str[i] != '+')
             return (false);
-        else if (getStr()[i] == 'f' && getStr()[i + 1] != '\0')
+        else if ((str[i] == 'f' && str[i + 1] != '\0')
+            || (str[i] == 'f' && !isdigit(str[i - 1]) && str[i - 1] != '.'))
             return (false);
-        else if ((getStr()[i] == '-' || getStr()[i] == '+') && i != 0)
+        else if (((str[i] == '-' || str[i] == '+') && i != 0) 
+                || ((str[i] == '-' || str[i] == '+') && !isdigit(str[i + 1]) && str[i + 1] != '.'))
             return (false);
     }
     return (true);
 }
-void ScalarConverter::SetData(){
+
+bool parser(std::string str){
+    if (HandlePseudoLiterals(str)){
+        return (false);
+    }
+    else if (str.length() == 1
+        && isprint(str[0]) &&
+        !isdigit(str[0])){
+        DisplayData(str, "impossible", "impossible", "impossible");
+        return (false);
+    }
+    else if (CheckString(str)
+        && CountCharacter(str, 'f')
+        && CountCharacter(str, '.')
+        && CountCharacter(str, '-')
+        && CountCharacter(str, '+')){
+        return (true);
+    }
+    else{
+        DisplayData("impossible", "impossible", "impossible", "impossible");
+        return (false);
+    }
+}
+void ScalarConverter::convert(std::string str){
     errno = 0;
     std::stringstream ssch;
     std::stringstream ssin;
@@ -150,9 +131,13 @@ void ScalarConverter::SetData(){
     std::stringstream ssdb;
     char ch;
 
-    double number = std::strtod(getStr().c_str(), NULL);
+    if (!parser(str))
+        return ; 
+    double number = std::strtod(str.c_str(), NULL);
     ch = static_cast<char>(number);
-    if (std::isprint(ch)) {
+    if (number < -128 || number > 127)
+        ssch << "Not valid";
+    else if (std::isprint(ch)) {
         ssch << ch;
     } else {
         ssch << "Non displayable";
@@ -170,8 +155,5 @@ void ScalarConverter::SetData(){
     else
         ssdb << intToString(static_cast<double>(number));
     
-    setCharacter(ssch.str());
-    setInteger(ssin.str());
-    setFloating(ssfl.str());
-    setDoubl(ssdb.str());
+    DisplayData(ssch.str(), ssin.str(), ssfl.str(), ssdb.str());
 }
