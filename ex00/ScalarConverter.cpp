@@ -19,6 +19,14 @@ ScalarConverter::~ScalarConverter(){
     
 }
 
+ScalarConverter::ScalarConverter(const ScalarConverter &other){
+    (void)other;
+}
+ScalarConverter &ScalarConverter::operator=(const ScalarConverter &other){
+    (void)other;
+    return(*this);
+}
+
 std::string intToString(double value) {
     std::stringstream ss;
     ss << std::fixed << std::setprecision(1) << value;
@@ -44,7 +52,7 @@ void DisplayData(std::string ch, std::string in, std::string fl, std::string db)
     if (fl != "impossible" && fl != "Not valid")
         std::cout << "float: " << fl << "f" << std::endl;
     else
-    std::cout << "float: " << fl << std::endl;
+        std::cout << "float: " << fl << std::endl;
     std::cout << "double: " << db << std::endl;
 }
 
@@ -58,6 +66,11 @@ bool CountCharacter(std::string str, char ch){
         return (false);
     return (true);
 }
+
+bool is_sign(char c){
+    return (c == '-' || c == '+');
+}
+
 bool HandlePseudoLiterals(std::string str){
     std::string tab[6] = {"nan", "+inf", "-inf", "nanf", "+inff", "-inff"};
     bool check = false;
@@ -72,30 +85,27 @@ bool HandlePseudoLiterals(std::string str){
     {
         std::string fl = str;
         std::string db = str;
-        if ((str[0] == '+' || str[0] == '-') && str[4] == 'f')
+        if (is_sign(str[0]) && str[4] == 'f')
         {
             fl = fl.substr(0, 4);
             db = db.substr(0, 4);
-        }
-        else if (str[3] == 'f'){
-            fl = fl.substr(0, 3);
-            db = db.substr(0, 3);
         }
         DisplayData("impossible", "impossible", fl, db);
         return (true);
     }
     return (false);
 }
+
 bool CheckString(std::string str){
     for (size_t i = 0; i < str.length(); i++){
         if (!isdigit(str[i]) && str[i] != '.' && str[i] != 'f'
-        && str[i] != '-' && str[i] != '+')
+        && !is_sign(str[i]))
             return (false);
         else if ((str[i] == 'f' && str[i + 1] != '\0')
             || (str[i] == 'f' && !isdigit(str[i - 1]) && str[i - 1] != '.'))
             return (false);
-        else if (((str[i] == '-' || str[i] == '+') && i != 0) 
-                || ((str[i] == '-' || str[i] == '+') && !isdigit(str[i + 1]) && str[i + 1] != '.'))
+        else if ((is_sign(str[i]) && i != 0) 
+                || (is_sign(str[i]) && !isdigit(str[i + 1]) && str[i + 1] != '.'))
             return (false);
     }
     return (true);
@@ -106,8 +116,8 @@ bool parser(std::string str){
         return (false);
     }
     else if (str.length() == 1
-        && isprint(str[0]) &&
-        !isdigit(str[0])){
+        && isprint(str[0])
+        && !isdigit(str[0])){
         DisplayData(str, "impossible", "impossible", "impossible");
         return (false);
     }

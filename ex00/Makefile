@@ -2,7 +2,6 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98
 SRCS =  main.cpp\
         ScalarConverter.cpp
 
-
 NAME = convert
 
 OBJECTS = $(SRCS:.cpp=.o)
