@@ -17,7 +17,8 @@ int main()
     Base b;
     Base *new_b = b.generate();
 
-    b.identify(new_b);
+    // b.identify(new_b);
+    b.identify(*new_b);
     delete new_b;
     return (0);
 }
