@@ -16,6 +16,8 @@
 #include "A.hpp"
 #include "B.hpp"
 #include "C.hpp"
+#include <typeinfo>
+#include <exception>
 
 Base::Base(){
 
@@ -48,14 +50,32 @@ void Base::identify(Base* p){
         std::cout << "Unknown derived type" << std::endl;
     }
 }
-void Base::identify(Base& p){
-    if (dynamic_cast<A*>(&p)) {
-        std::cout << "This is a Derived A" << std::endl;
-    }else if (dynamic_cast<B*>(&p)) {
-        std::cout << "This is a Derived B" << std::endl;
-    }else if (dynamic_cast<C*>(&p)){
-        std::cout << "This is a Derived C" << std::endl;
-    } else {
-        std::cout << "Unknown derived type" << std::endl;
+
+int try_cast(Base& derived_ref, const char* type_name){
+    try{
+        if (std::string(type_name) == "A") 
+            dynamic_cast<A&>(derived_ref);
+        else if (std::string(type_name) == "B") 
+            dynamic_cast<B&>(derived_ref);
+        else if (std::string(type_name) == "C") 
+            dynamic_cast<C&>(derived_ref);
+        else
+            return (0);
+        std::cout << "type is " << type_name << std::endl;
     }
+    catch(std::bad_cast &e){
+        std::cout << type_name << " : casting faild" << std::endl;
+        return (0);
+    }
+    return (1);
+}
+void Base::identify(Base& p){
+    if (try_cast(p, "A"))
+        return;
+    else if (try_cast(p, "B"))
+        return;
+    else if (try_cast(p, "C"))
+        return;
+    else
+        std::cout << "unknown type\n";
 }

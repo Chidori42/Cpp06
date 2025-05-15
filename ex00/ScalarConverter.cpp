@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 18:16:04 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/26 12:47:16 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:15:23 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,14 @@ ScalarConverter::ScalarConverter(){
 }
 ScalarConverter::~ScalarConverter(){
     
+}
+
+ScalarConverter::ScalarConverter(const ScalarConverter &other){
+    (void)other;
+}
+ScalarConverter &ScalarConverter::operator=(const ScalarConverter &other){
+    (void)other;
+    return(*this);
 }
 
 std::string intToString(double value) {
@@ -44,20 +52,14 @@ void DisplayData(std::string ch, std::string in, std::string fl, std::string db)
     if (fl != "impossible" && fl != "Not valid")
         std::cout << "float: " << fl << "f" << std::endl;
     else
-    std::cout << "float: " << fl << std::endl;
+        std::cout << "float: " << fl << std::endl;
     std::cout << "double: " << db << std::endl;
 }
 
-bool CountCharacter(std::string str, char ch){
-    int counter = 0;
-    for (size_t i = 0; i < str.length(); i++){
-        if (str[i] == ch)
-            counter++;
-    }
-    if (counter > 1)
-        return (false);
-    return (true);
+bool is_sign(char c){
+    return (c == '-' || c == '+');
 }
+
 bool HandlePseudoLiterals(std::string str){
     std::string tab[6] = {"nan", "+inf", "-inf", "nanf", "+inff", "-inff"};
     bool check = false;
@@ -68,59 +70,30 @@ bool HandlePseudoLiterals(std::string str){
             break;
         }
     }
-    if (check)
-    {
-        std::string fl = str;
-        std::string db = str;
-        if ((str[0] == '+' || str[0] == '-') && str[4] == 'f')
-        {
-            fl = fl.substr(0, 4);
-            db = db.substr(0, 4);
-        }
-        else if (str[3] == 'f'){
-            fl = fl.substr(0, 3);
-            db = db.substr(0, 3);
-        }
-        DisplayData("impossible", "impossible", fl, db);
-        return (true);
-    }
-    return (false);
-}
-bool CheckString(std::string str){
-    for (size_t i = 0; i < str.length(); i++){
-        if (!isdigit(str[i]) && str[i] != '.' && str[i] != 'f'
-        && str[i] != '-' && str[i] != '+')
-            return (false);
-        else if ((str[i] == 'f' && str[i + 1] != '\0')
-            || (str[i] == 'f' && !isdigit(str[i - 1]) && str[i - 1] != '.'))
-            return (false);
-        else if (((str[i] == '-' || str[i] == '+') && i != 0) 
-                || ((str[i] == '-' || str[i] == '+') && !isdigit(str[i + 1]) && str[i + 1] != '.'))
-            return (false);
-    }
-    return (true);
+    return (check);
 }
 
-bool parser(std::string str){
-    if (HandlePseudoLiterals(str)){
-        return (false);
+void setData(std::string str, char &ch, int &in, float &fl, double &db){
+    errno = 0;
+    if (str.length() == 1 && !isdigit(str[0]))
+    {
+        ch = static_cast<char>(str[0]);
+        in = static_cast<int>(ch);
+        fl = static_cast<float>(ch);
+        db = static_cast<double>(ch);
     }
-    else if (str.length() == 1
-        && isprint(str[0]) &&
-        !isdigit(str[0])){
-        DisplayData(str, "impossible", "impossible", "impossible");
-        return (false);
-    }
-    else if (CheckString(str)
-        && CountCharacter(str, 'f')
-        && CountCharacter(str, '.')
-        && CountCharacter(str, '-')
-        && CountCharacter(str, '+')){
-        return (true);
-    }
-    else{
-        DisplayData("impossible", "impossible", "impossible", "impossible");
-        return (false);
+    else
+    {
+        char *endp = NULL;
+        double number = std::strtod(str.c_str(), &endp);
+        if (number > INT_MAX || number < INT_MIN)
+            std::cout << "Error Out Of Range" << std::endl;
+        else if (endp[0] != '\0' && endp[0] != 'f')
+            std::cout << "Error invalid input" << std::endl;
+        in = static_cast<int>(number);
+        ch = static_cast<char>(number);
+        fl = static_cast<float>(number);
+        db = static_cast<double>(number);
     }
 }
 void ScalarConverter::convert(std::string str){
@@ -130,30 +103,16 @@ void ScalarConverter::convert(std::string str){
     std::stringstream ssfl;
     std::stringstream ssdb;
     char ch;
+    int in;
+    float fl;
+    double db;
 
-    if (!parser(str))
-        return ; 
-    double number = std::strtod(str.c_str(), NULL);
-    ch = static_cast<char>(number);
-    if (number < -128 || number > 127)
-        ssch << "Not valid";
-    else if (std::isprint(ch)) {
-        ssch << ch;
-    } else {
-        ssch << "Non displayable";
-    }
-    if (errno || number > INT_MAX || number < INT_MIN)
-        ssin << "Not valid";
-    else
-        ssin << intToString(static_cast<int>(number));
-    if (errno || number > FLT_MAX || number < -FLT_MAX)
-        ssfl << "Not valid";
-    else
-        ssfl << intToString(static_cast<float>(number));
-    if(errno || number > DBL_MAX || number < -DBL_MAX)
-        ssdb << "Not valid";
-    else
-        ssdb << intToString(static_cast<double>(number));
-    
+    if (str.empty())
+        DisplayData("Not valid", "Not valid", "Not valid", "Not valid");
+    setData(str, ch, in, fl, db);
+    ssch << ch;
+    ssin << in;
+    ssfl << fl;
+    ssdb << db;  
     DisplayData(ssch.str(), ssin.str(), ssfl.str(), ssdb.str());
 }

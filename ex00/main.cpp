@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 19:46:06 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/26 12:40:47 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:49:22 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ std::string trim(const std::string& str){
 int main(int ac, char **av)
 {
     if (ac == 2){
-        std::string str = trim(av[1]);
+        std::string str = av[1];
+        if (str.length() > 1)
+            str = trim(av[1]);
         ScalarConverter::convert(str);
     }
     else{
