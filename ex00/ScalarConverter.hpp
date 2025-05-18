@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 18:10:11 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/05/15 15:49:52 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/05/18 21:37:29 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,7 @@
 #include <string>
 #include <cctype>
 #include <iomanip>
-#include <climits>
-#include <float.h>
 #include <cmath>
-// #include <limits.h>
-#include <cerrno>
 #include <sstream>
 #include <iostream>
 

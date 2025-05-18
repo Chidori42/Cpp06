@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 18:16:04 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/05/17 19:36:57 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/05/18 21:33:39 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,11 @@ bool is_sign(char c){
     return (c == '-' || c == '+');
 }
 
-bool HandlePseudoLiterals(std::string str){
-    std::string tab[6] = {"nan", "+inf", "-inf", "nanf", "+inff", "-inff"};
-    bool check = false;
-
-    for (size_t i = 0; i < 6; i++){
-        if (str == tab[i]){
-            check = true;
-            break;
-        }
+bool HandlePseudoLiterals(double number){
+    if (isnan(number) || isinf(number)){
+        return (true);
     }
-    return (check);
+    return (false);
 }
 
 void detectRealType(std::string str){
@@ -83,11 +77,12 @@ void detectRealType(std::string str){
 void convetRealType(std::string str){
     char *endp;
     double number = std::strtod(str.c_str(), &endp);
+
     if (strlen(endp) > 1)
         throw "Error\nInvalid input";
     else if (endp[0] != '\0' && endp[0] != 'f')
         throw "Error\nInvalid input";
-    bool isPseudo = HandlePseudoLiterals(str);
+    bool isPseudo = HandlePseudoLiterals(number);
     if (is_float || isPseudo){
         float realnum = number;
         if (realnum > 127 || realnum < -128 || isPseudo)
@@ -96,18 +91,12 @@ void convetRealType(std::string str){
             ssch << "Non displayable";
         else
             ssch << static_cast<char>(realnum);
-        if ((number > FLT_MAX || number < -FLT_MAX) && !isPseudo){
+        if (number > INT_MAX || number < INT_MIN || isPseudo)
             ssin << "impossible";
-            ssfl << "impossible";
-            ssdb << "impossible";
-        }else{
-            if (number > INT_MAX || number < INT_MIN || isPseudo)
-                ssin << "impossible";
-            else
-                ssin << static_cast<int>(realnum);
-            ssfl << std::fixed << std::setprecision(1) << static_cast<float>(realnum);
-            ssdb << std::fixed << std::setprecision(1) << static_cast<double>(realnum);
-        }
+        else
+            ssin << static_cast<int>(number);
+        ssfl << std::fixed << std::setprecision(1) << static_cast<float>(realnum);
+        ssdb << std::fixed << std::setprecision(1) << static_cast<double>(realnum);
     }else if (is_double || isPseudo){
         double realnum = number;
         if (realnum > 127 || realnum < -128 || isPseudo)
@@ -117,22 +106,12 @@ void convetRealType(std::string str){
         else
             ssch << static_cast<char>(realnum);
         
-        if ((number > DBL_MAX || number < DBL_MIN) && !isPseudo){
+        if (number > INT_MAX || number < INT_MIN || isPseudo)
             ssin << "impossible";
-            ssfl << "impossible";
-            ssdb << "impossible";
-        }
-        else{
-            if (number > INT_MAX || number < INT_MIN || isPseudo)
-                ssin << "impossible";
-            else 
-                ssin << static_cast<int>(realnum);
-            if ((number > FLT_MAX || number < -FLT_MAX) && !isPseudo)
-                ssfl << "impossible";
-            else
-                ssfl << std::fixed << std::setprecision(1) << static_cast<float>(realnum);
-            ssdb << std::fixed << std::setprecision(1) << static_cast<double>(realnum);
-        }
+        else 
+            ssin << static_cast<int>(realnum);
+        ssfl << std::fixed << std::setprecision(1) << static_cast<float>(realnum);
+        ssdb << std::fixed << std::setprecision(1) << static_cast<double>(realnum);
     }else{
         int realnum = number;
         if (realnum > 127 || realnum < -128)
@@ -156,15 +135,13 @@ void convetRealType(std::string str){
 }
 
 void setData(std::string str){
-    if (str.length() == 1 && !isdigit(str[0]))
-    {
+    if (str.length() == 1 && !isdigit(str[0])){
         ssch << static_cast<char>(str[0]);
         ssin << static_cast<int>(str[0]);
-        ssfl << static_cast<float>(str[0]);
-        ssdb << static_cast<double>(str[0]);
+        ssfl << std::fixed << std::setprecision(1) << static_cast<float>(str[0]);
+        ssdb << std::fixed << std::setprecision(1) << static_cast<double>(str[0]);
     }
-    else
-    {
+    else{
         convetRealType(str);
     }
 }

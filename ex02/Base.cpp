@@ -6,7 +6,7 @@
 /*   By: ael-fagr <ael-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 00:02:06 by ael-fagr          #+#    #+#             */
-/*   Updated: 2025/04/28 10:37:11 by ael-fagr         ###   ########.fr       */
+/*   Updated: 2025/05/17 21:12:40 by ael-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ void Base::identify(Base* p){
 int try_cast(Base& derived_ref, const char* type_name){
     try{
         if (std::string(type_name) == "A") 
-            dynamic_cast<A&>(derived_ref);
+            (void)dynamic_cast<A&>(derived_ref);
         else if (std::string(type_name) == "B") 
-            dynamic_cast<B&>(derived_ref);
+            (void)dynamic_cast<B&>(derived_ref);
         else if (std::string(type_name) == "C") 
-            dynamic_cast<C&>(derived_ref);
+            (void)dynamic_cast<C&>(derived_ref);
         else
             return (0);
         std::cout << "type is " << type_name << std::endl;
